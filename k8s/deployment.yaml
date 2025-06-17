@@ -25,6 +25,6 @@ spec:
             - name: SPRING_DATASOURCE_USERNAME
               value: admin
             - name: SPRING_DATASOURCE_PASSWORD
-              value: root1234
+              value: password123
             - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
               value: org.hibernate.dialect.MySQL8Dialect
