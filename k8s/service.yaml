@@ -7,6 +7,6 @@ spec:
     app: todo-app
   ports:
     - protocol: TCP
-      port: 443
+      port: 80
       targetPort: 80
   type: LoadBalancer
