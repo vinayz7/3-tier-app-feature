@@ -16,15 +16,15 @@ spec:
     spec:
       containers:
         - name: todo-app
-          image: 557690580165.dkr.ecr.us-east-1.amazonaws.com/final:app
+          image: 339712987604.dkr.ecr.us-east-1.amazonaws.com/final:app
           ports:
             - containerPort: 80
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:mysql://database-2.chugycug40wd.us-east-1.rds.amazonaws.com:3306/mydb
+              value: jdbc:mysql://database-1.cluster-cdoo2oqeiipe.us-east-1.rds.amazonaws.com/todo
             - name: SPRING_DATASOURCE_USERNAME
               value: admin
             - name: SPRING_DATASOURCE_PASSWORD
-              value: password123
+              value: admin123
             - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
               value: org.hibernate.dialect.MySQL8Dialect
