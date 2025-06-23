@@ -6,7 +6,7 @@ env:
     REGION: us-east-1
     REPO_NAME: final
     IMAGE_TAG: app
-    IMAGE_URI: 605134461257.dkr.ecr.us-east-1.amazonaws.com/final:app
+    IMAGE_URI: 339712987604.dkr.ecr.us-east-1.amazonaws.com/final:app
 phases:
   install:
     runtime-versions:
