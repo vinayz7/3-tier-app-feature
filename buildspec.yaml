@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    ACCOUNT_ID: 605134461257
+    ACCOUNT_ID: 339712987604
     REGION: us-east-1
     REPO_NAME: final
     IMAGE_TAG: app
