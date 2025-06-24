@@ -23,17 +23,16 @@ phases:
 
   build:
     commands:
-      build:
-  commands:
-    - echo Navigating to app directory...
-    - cd app-tier
-    - echo Building and analyzing with SonarQube...
-    - mvn clean verify sonar:sonar -Dsonar.projectKey=capastone_3tier -Dsonar.host.url=http://3.86.252.15 -Dsonar.login=sqp_427fbc0390c05c889ced481b0b67e1bda52398a8
-    - echo Building Docker image...
-    - docker build -t $REPO_NAME:$IMAGE_TAG .
-    - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
-    - cd ..
-
+      - echo Navigating to app directory...
+      - cd app-tier
+      - echo Building JAR with Maven...
+      - mvn clean package -DskipTests
+      - echo Running SonarQube analysis...
+      - mvn clean verify sonar:sonar -Dsonar.projectKey=capastone_3tier -Dsonar.host.url=http://3.86.252.15 -Dsonar.login=sqp_427fbc0390c05c889ced481b0b67e1bda52398a8
+      - echo Building Docker image...
+      - docker build -t $REPO_NAME:$IMAGE_TAG .
+      - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
+      - cd ..
 
   post_build:
     commands:
@@ -43,7 +42,7 @@ phases:
       - mkdir -p k8s-out
       - sed "s|IMAGE_PLACEHOLDER|$IMAGE_URI|g" k8s/deployment.yaml > k8s-out/deployment.yaml
       - cp k8s/service.yaml k8s-out/service.yaml
-      - echo Done.
+      - echo Build and deployment artifacts ready.
 
 artifacts:
   base-directory: k8s-out
