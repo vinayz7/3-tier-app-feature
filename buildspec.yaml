@@ -23,10 +23,9 @@ phases:
 
   build:
     commands:
-      - echo Building JAR inside app-tier...
+      - echo Navigating to app directory...
       - cd app-tier
-      - mvn clean package -DskipTests
-      - echo Running SonarQube analysis...
+      - echo Building JAR and running SonarQube analysis...
       - mvn clean verify sonar:sonar \
           -Dsonar.projectKey=capastone_3tier \
           -Dsonar.host.url=http://3.86.252.15 \
@@ -38,13 +37,13 @@ phases:
 
   post_build:
     commands:
-      - echo Pushing image to Amazon ECR...
+      - echo Pushing Docker image to Amazon ECR...
       - docker push $IMAGE_URI
       - echo Preparing Kubernetes manifests...
       - mkdir -p k8s-out
       - sed "s|IMAGE_PLACEHOLDER|$IMAGE_URI|g" k8s/deployment.yaml > k8s-out/deployment.yaml
       - cp k8s/service.yaml k8s-out/service.yaml
-      - echo Done preparing artifacts.
+      - echo Done.
 
 artifacts:
   base-directory: k8s-out
