@@ -1,29 +1,57 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Edit Task</title>
- <link rel="stylesheet" th:href="@{/css/styles.css}"></head>
-<body>
-<div class="container">
-    <h2>Edit Task</h2>
-    <form action="/update" method="post" th:object="${task}">
-        <input type="hidden" th:field="*{id}"/>
-
-        <label>Title:</label>
-        <input type="text" th:field="*{title}" required><br>
-
-        <label>Description:</label>
-        <textarea th:field="*{description}"></textarea><br>
-
-        <label>Due Date:</label>
-        <input type="date" th:field="*{dueDate}"><br>
-
-        <label>Completed:</label>
-        <input type="checkbox" th:field="*{completed}"><br>
-
-        <button type="submit">Update Task</button>
-    </form>
-    <a href="/">Back</a>
-</div>
-</body>
-</html>
+<title>Edit Product</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            color: #1f2937;
+        }
+ 
+        .container {
+            max-width: 680px;
+            margin: 80px auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+        }
+ 
+        h2 {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+ 
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+ 
+        label {
+            margin-top: 16px;
+            font-weight: 600;
+        }
+ 
+        input[type="text"],
+        input[type="date"],
+        textarea {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            margin-top: 6px;
+        }
+ 
+        textarea {
+            min-height: 100px;
+        }
+ 
+        input[type="checkbox"] {
+            margin-top: 14px;
+            transform: scale(1.3);
+        }
