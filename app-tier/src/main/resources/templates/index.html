@@ -1,29 +1,195 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ToDo Dashboard</title>
-     <link rel="stylesheet" th:href="@{/css/styles.css}">
+<title>Product Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            margin: 0;
+
+            padding: 0;
+
+            background: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+
+            background-size: cover;
+
+            color: #111827;
+
+        }
+ 
+        .container {
+
+            max-width: 960px;
+
+            margin: 60px auto;
+
+            padding: 40px;
+
+            background-color: rgba(255, 255, 255, 0.95);
+
+            border-radius: 16px;
+
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+
+        }
+ 
+        h2 {
+
+            text-align: center;
+
+            color: #1f2937;
+
+            font-size: 28px;
+
+            margin-bottom: 30px;
+
+        }
+ 
+        a.btn {
+
+            display: inline-block;
+
+            background-color: #6366f1;
+
+            color: white;
+
+            padding: 12px 22px;
+
+            border-radius: 8px;
+
+            font-weight: 600;
+
+            text-decoration: none;
+
+            transition: background-color 0.3s ease;
+
+            margin-bottom: 20px;
+
+        }
+ 
+        a.btn:hover {
+
+            background-color: #4f46e5;
+
+        }
+ 
+        table {
+
+            width: 100%;
+
+            border-collapse: collapse;
+
+            background-color: #fff;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+        }
+ 
+        thead {
+
+            background-color: #6366f1;
+
+            color: white;
+
+        }
+ 
+        th, td {
+
+            padding: 16px;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            text-align: left;
+
+        }
+ 
+        th:first-child, td:first-child {
+
+            border-left: 4px solid #6366f1;
+
+        }
+ 
+        td a {
+
+            color: #4f46e5;
+
+            font-weight: 500;
+
+            text-decoration: none;
+
+            margin: 0 8px;
+
+        }
+ 
+        td a:hover {
+
+            text-decoration: underline;
+
+        }
+ 
+        @media (max-width: 768px) {
+
+            .container {
+
+                padding: 20px;
+
+                margin: 30px 10px;
+
+            }
+ 
+            th, td {
+
+                padding: 12px;
+
+            }
+ 
+            a.btn {
+
+                display: block;
+
+                width: 100%;
+
+                text-align: center;
+
+            }
+
+        }
+</style>
 </head>
 <body>
 <div class="container">
-    <h1>Task Dashboard</h1>
-    <a href="/add" class="btn">Add Task</a>
-    <table>
-        <thead>
-        <tr><th>Title</th><th>Due Date</th><th>Completed</th><th>Actions</th></tr>
-        </thead>
-        <tbody>
-        <tr th:each="task : ${tasks}">
-            <td th:text="${task.title}"></td>
-            <td th:text="${task.dueDate}"></td>
-            <td th:text="${task.completed} ? 'Yes' : 'No'"></td>
-            <td>
-                <a th:href="@{/edit/{id}(id=${task.id})}">Edit</a> |
-                <a th:href="@{/delete/{id}(id=${task.id})}">Delete</a>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+<h2>📦 Product Inventory</h2>
+<a class="btn" href="/add">+ Add New Product</a>
+<table>
+<thead>
+<tr>
+<th>Title</th>
+<th>Description</th>
+<th>Expiry Date</th>
+<th>Sold</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr th:each="task : ${tasks}">
+<td th:text="${task.title}">Title</td>
+<td th:text="${task.description}">Description</td>
+<td th:text="${task.dueDate}">Expiry Date</td>
+<td th:text="${task.completed}">Completed</td>
+<td>
+<a th:href="@{'/edit/' + ${task.id}}">Edit</a>|
+<a th:href="@{'/delete/' + ${task.id}}">Delete</a>
+</td>
+</tr>
+</tbody>
+</table>
 </div>
 </body>
 </html>
+ 
