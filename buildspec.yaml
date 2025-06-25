@@ -48,10 +48,10 @@ phases:
       - docker push $IMAGE_URI
       - echo Preparing Kubernetes manifests...
       - mkdir -p k8s-out
-      - sed "s|IMAGE_PLACEHOLDER|$IMAGE_URI|g" k8s/deployment.yaml > k8s-out/deployment.yaml
+      - sed "s|image_url|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}|g" k8s/deployment.yaml > k8s-out/deployment.yaml
       - cp k8s/service.yaml k8s-out/service.yaml
       - echo Build and deployment artifacts ready.
-
+      
 artifacts:
   base-directory: k8s-out
   files:
