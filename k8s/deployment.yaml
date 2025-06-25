@@ -17,6 +17,7 @@ spec:
       containers:
         - name: todo-app
           image: image_url
+          imagePullPolicy: Always  # <-- This ensures the image is pulled every time
           ports:
             - containerPort: 80
           env:
