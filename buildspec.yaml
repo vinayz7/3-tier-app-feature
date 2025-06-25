@@ -45,7 +45,7 @@ phases:
   post_build:
     commands:
       - echo Pushing Docker image to Amazon ECR...
-      - docker push $IMAGE_URI
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}
       - echo Preparing Kubernetes manifests...
       - mkdir -p k8s-out
       - sed "s|image_url|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}|g" k8s/deployment.yaml > k8s-out/deployment.yaml
@@ -53,7 +53,6 @@ phases:
       - echo Build and deployment artifacts ready.
       
 artifacts:
-  base-directory: k8s-out
   files:
-    - deployment.yaml
-    - service.yaml
+    - k8s-out/deployment.yaml
+    - k8s-out/service.yaml
