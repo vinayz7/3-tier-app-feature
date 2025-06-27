@@ -1,0 +1,54 @@
+version: 0.2
+
+# Define environment variables if needed.
+# For sensitive data, use CodeBuild's parameter store or secrets manager integration.
+env:
+  variables:
+    TF_VERSION: "1.7.5" # Specify the desired Terraform version
+    AWS_REGION: "us-west-1" # Explicitly set the AWS region for the build
+
+phases:
+  install:
+    commands:
+      - echo "Installing Terraform CLI version $TF_VERSION..."
+      - apt-get update -y # Update package list for apt
+      - apt-get install -y unzip curl # Install unzip and curl if not present
+      - curl -LO https://releases.hashicorp.com/terraform/${TF_VERSION}/terraform_${TF_VERSION}_linux_amd64.zip
+      - unzip terraform_${TF_VERSION}_linux_amd64.zip
+      - mv terraform /usr/local/bin/
+      - rm terraform_${TF_VERSION}_linux_amd64.zip
+      - terraform version # Verify Terraform installation
+
+  pre_build:
+    commands:
+      - echo "Entering Terraform project directory..."
+      # Assuming main.tf is in the root of the CodeBuild source artifact
+      - echo "Initializing Terraform backend and modules..."
+      - terraform init
+
+  build:
+    commands:
+      - echo "Validating Terraform configuration..."
+      - terraform validate
+      - echo "Planning Terraform changes (optional, for review)..."
+      - terraform plan -out=tfplan # Create a plan file
+      - echo "Applying Terraform changes..."
+      - terraform apply -auto-approve tfplan # Apply the plan directly
+
+  post_build:
+    commands:
+      - echo "Terraform deployment completed successfully."
+      - echo "Retrieving EKS cluster endpoint..."
+      - terraform output eks_cluster_endpoint
+      - echo "Retrieving RDS DB endpoint address..."
+      - terraform output db_endpoint_address
+
+artifacts:
+  # Optionally, you can specify artifacts to upload to S3 (e.g., a plan file, output variables)
+  files:
+    - '**/*' # Upload all files in the build directory (be cautious with this in production)
+  discard-paths: yes # Discard the directory structure when archiving
+
+cache:
+  paths:
+    - '/root/.terraform/**/*' # Cache Terraform plugins and modules for faster builds
