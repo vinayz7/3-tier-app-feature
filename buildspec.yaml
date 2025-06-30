@@ -1,64 +1,64 @@
-# version: 0.2
+version: 0.2
 
-# env:
-#   variables:
-#     ACCOUNT_ID: 619071307284
-#     REGION: us-east-1
-#     #REPO_NAME:    
-#     # IMAGE_TAG: latest2
-#     # IMAGE_URI: 216989142685.dkr.ecr.us-east-1.amazonaws.com/test:latest2
-#     IMAGE_REPO: final
+env:
+  variables:
+    ACCOUNT_ID: 619071307284
+    REGION: us-east-1
+    #REPO_NAME:    
+    # IMAGE_TAG: latest2
+    # IMAGE_URI: 216989142685.dkr.ecr.us-east-1.amazonaws.com/test:latest2
+    IMAGE_REPO: final
 
-# phases:
-#   install:
-#     runtime-versions:
-#       java: corretto17
-#     commands:
-#       - echo Installing Maven...
-#       - yum install -y maven docker
-#       - export IMAGE_TAG=v1.${CODEBUILD_BUILD_NUMBER}
-#       - echo Installing Trivy...
-#       - wget https://github.com/aquasecurity/trivy/releases/download/v0.63.0/trivy_0.63.0_Linux-64bit.tar.gz
-#       - tar -xzf trivy_0.63.0_Linux-64bit.tar.gz
-#       - mv trivy /usr/local/bin/
-#       - trivy --version
+phases:
+  install:
+    runtime-versions:
+      java: corretto17
+    commands:
+      - echo Installing Maven...
+      - yum install -y maven docker
+      - export IMAGE_TAG=v1.${CODEBUILD_BUILD_NUMBER}
+      - echo Installing Trivy...
+      - wget https://github.com/aquasecurity/trivy/releases/download/v0.63.0/trivy_0.63.0_Linux-64bit.tar.gz
+      - tar -xzf trivy_0.63.0_Linux-64bit.tar.gz
+      - mv trivy /usr/local/bin/
+      - trivy --version
 
-#   pre_build:
-#     commands:
-#       - echo Logging in to Amazon ECR...
-#       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
 
-#   build:
-#     commands:
-#       - echo Building JAR inside app-tier...
-#       - cd app-tier
-#       - mvn clean package -DskipTests
-#       # - echo Running SonarQube analysis...
-#       # - mvn clean verify sonar:sonar -Dsonar.projectKey=TODO -Dsonar.host.url=http://54.165.220.18 -Dsonar.login=sqp_9aef180c6bef97fc3f3a94b811ec6ae0e54dbb06
-#       # - echo Building Docker image...
-#       # - docker build -t $REPO_NAME:$IMAGE_TAG .
-#       # - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
-#       # - cd ..
-#       - echo "Building and tagging ..."
-#       - docker build -t "${IMAGE_REPO}:${IMAGE_TAG}" .
-#       - docker tag "${IMAGE_REPO}:${IMAGE_TAG}" "${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}"
-#       - cd -
-#       - mkdir -p trivy-reports
-#       - trivy image --severity HIGH,CRITICAL --exit-code 0 --format table -o trivy-reports/Todo-report.txt ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG} || true
+  build:
+    commands:
+      - echo Building JAR inside app-tier...
+      - cd app-tier
+      - mvn clean package -DskipTests
+      # - echo Running SonarQube analysis...
+      # - mvn clean verify sonar:sonar -Dsonar.projectKey=TODO -Dsonar.host.url=http://54.165.220.18 -Dsonar.login=sqp_9aef180c6bef97fc3f3a94b811ec6ae0e54dbb06
+      # - echo Building Docker image...
+      # - docker build -t $REPO_NAME:$IMAGE_TAG .
+      # - docker tag $REPO_NAME:$IMAGE_TAG $IMAGE_URI
+      # - cd ..
+      - echo "Building and tagging ..."
+      - docker build -t "${IMAGE_REPO}:${IMAGE_TAG}" .
+      - docker tag "${IMAGE_REPO}:${IMAGE_TAG}" "${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}"
+      - cd -
+      - mkdir -p trivy-reports
+      - trivy image --severity HIGH,CRITICAL --exit-code 0 --format table -o trivy-reports/Todo-report.txt ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG} || true
 
-#   post_build:
-#     commands:
-#       - echo Pushing image to Amazon ECR...
-#       - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}
-#       - echo Preparing Kubernetes manifests...
-#       - mkdir -p k8s-out
-#       - sed "s|image_url|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}|g" k8s/deployment.yaml > k8s-out/deployment.yaml
-#       - cp k8s/service.yaml k8s-out/service.yaml
-#       - echo Done preparing artifacts.
+  post_build:
+    commands:
+      - echo Pushing image to Amazon ECR...
+      - docker push ${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}
+      - echo Preparing Kubernetes manifests...
+      - mkdir -p k8s-out
+      - sed "s|image_url|${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com/${IMAGE_REPO}:${IMAGE_TAG}|g" k8s/deployment.yaml > k8s-out/deployment.yaml
+      - cp k8s/service.yaml k8s-out/service.yaml
+      - echo Done preparing artifacts.
 
-# artifacts:
-#   files:
-#     - k8s-out/deployment.yaml
-#     - k8s-out/service.yaml
-#     - trivy-reports/*
-#   discard-paths: yes
+artifacts:
+  files:
+    - k8s-out/deployment.yaml
+    - k8s-out/service.yaml
+    - trivy-reports/*
+  discard-paths: yes
