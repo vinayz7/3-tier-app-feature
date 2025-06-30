@@ -1,31 +1,31 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: todo-app
-#   labels:
-#     app: todo-app
-# spec:
-#   replicas: 2
-#   selector:
-#     matchLabels:
-#       app: todo-app
-#   template:
-#     metadata:
-#       labels:
-#         app: todo-app
-#     spec:
-#       containers:
-#         - name: todo-app
-#           image: image_url
-#           imagePullPolicy: Always  # <-- This ensures the image is pulled every time
-#           ports:
-#             - containerPort: 80
-#           env:
-#             - name: SPRING_DATASOURCE_URL
-#               value: jdbc:mysql://mysqldatabase.cpgi8a46ea3d.us-east-1.rds.amazonaws.com/todo
-#             - name: SPRING_DATASOURCE_USERNAME
-#               value: admin
-#             - name: SPRING_DATASOURCE_PASSWORD
-#               value: admin1234
-#             - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
-#               value: org.hibernate.dialect.MySQL8Dialect
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: todo-app
+  labels:
+    app: todo-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: todo-app
+  template:
+    metadata:
+      labels:
+        app: todo-app
+    spec:
+      containers:
+        - name: todo-app
+          image: image_url
+          imagePullPolicy: Always  # <-- This ensures the image is pulled every time
+          ports:
+            - containerPort: 80
+          env:
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:mysql://mysqldatabase.cpgi8a46ea3d.us-east-1.rds.amazonaws.com/todo
+            - name: SPRING_DATASOURCE_USERNAME
+              value: admin
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: admin1234
+            - name: SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT
+              value: org.hibernate.dialect.MySQL8Dialect
